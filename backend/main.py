@@ -3,7 +3,7 @@ import uvicorn
 # ollama_chat 모듈의 call_ollama_chat 함수 로딩
 from ollama_chat import call_ollama_chat, get_ollama_models
 from schema import ChatRequest, ChatResponse
-
+from fastapi.middleware.cors import CORSMiddleware
 
 # FastAPI 객체 생성
 app = FastAPI(
@@ -11,6 +11,13 @@ app = FastAPI(
     description="Ollama 기반 로컬 LLM 채팅 백엔드 API",
     version="0.1.0",
 )
+
+app.add_middleware(CORSMiddleware,
+				   allow_origins=["*"],
+				   allow_credentials=True,
+				   allow_methods=["*"],
+				   allow_headers=["*"],
+                   )
 
 # /chat API 구현
 @app.post("/chat", response_model=ChatResponse)
